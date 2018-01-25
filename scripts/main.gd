@@ -47,7 +47,7 @@ func spawn_asteroid(size,pos,vel):
 	a.init(size,pos,vel)
 	asteroid_container.add_child(a)
 	a.connect("explode", self, "explode_asteroid")
-	#DO_NOT_REMOVE_!!!!!!!!!!!!    #a.init(size,pos,vel) !!IMPORTANT!!! INIT was here at first. when the asteroids get added to the scene with asteroid_container.add_child(a) they will be in the same location as the player (if you followed along with the video and moved them). That will trigger them to instantly explode before their position gets moved... Look at comments: https://www.youtube.com/watch?v=XGKROE7BFWY
+	#DO_NOT_REMOVE_!!!!!!!!!!!! GO DU   #a.init(size,pos,vel) !!IMPORTANT!!! INIT was here at first. when the asteroids get added to the scene with asteroid_container.add_child(a) they will be in the same location as the player (if you followed along with the video and moved them). That will trigger them to instantly explode before their position gets moved... Look at comments: https://www.youtube.com/watch?v=XGKROE7BFWY
 
 	
 func explode_asteroid(size,pos,vel,hit_vel):
