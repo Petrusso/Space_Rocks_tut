@@ -47,7 +47,7 @@ bullet = ExtResource( 2 )
 transform/pos = Vector2( -11, 46 )
 frames = SubResource( 2 )
 animation = "default"
-frame = 2
+frame = 1
 playing = true
 
 [node name="exhaust1" type="AnimatedSprite" parent="."]
@@ -55,7 +55,7 @@ playing = true
 transform/pos = Vector2( 11, 46 )
 frames = SubResource( 2 )
 animation = "default"
-frame = 2
+frame = 1
 playing = true
 
 [node name="muzzle" type="Position2D" parent="."]
@@ -104,7 +104,7 @@ _update_shape_index = 0
 [node name="gun_timer" type="Timer" parent="."]
 
 process_mode = 1
-wait_time = 0.2
+wait_time = 0.05
 one_shot = true
 autostart = false
 

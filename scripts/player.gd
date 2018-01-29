@@ -6,6 +6,7 @@ export var max_vel= 400
 export var friction=0.65
 var shield_level=global.shield_max
 var shield_up=true
+signal sig_explode_player
 
 export (PackedScene) var bullet=preload("res://scenes/player_bullet.tscn") #
 #var bullet=preload("res://scenes/player_bullet.tscn")
@@ -23,12 +24,7 @@ var rot = 0
 func _ready():
 	screen_size=get_viewport_rect().size
 	pos=screen_size/6
-	#set_pos(Vector2(0,0))#pos)
 	set_process(true)
-	#set_process_input(true)
-
-#func _input(event):
-#	pass
 
 func _process(delta):
 	if shield_up:
@@ -37,7 +33,6 @@ func _process(delta):
 		shield_up=false
 		shield_level=0
 		get_node("shield").hide()
-		print ("shl: ", shield_level, "\ndelta: ", delta)
 	if Input.is_action_pressed("player_shoot"):
 		if gun_timer.get_time_left() ==0:
 			shoot()
@@ -51,8 +46,10 @@ func _process(delta):
 	else:
 		get_node("exhaust").hide()
 		acc=Vector2(0,0)
+	if Input.is_action_pressed("player_backward"):
+		acc=Vector2(-thrust,0).rotated(rot)
+	
 	acc +=vel*-friction
-	#print ("ACC: ", acc)
 	vel+=acc*delta
 	pos+=vel*delta
 	if pos.x >screen_size.width:
@@ -73,13 +70,21 @@ func shoot():
 	b.start_at(get_rot(), get_node("muzzle").get_global_pos(),vel)
 	shoot_sounds.play("laser2")
 	
-	
+func disable():
+	hide()
+	set_process(false)
+	set_enable_monitoring(false)#NOT WORKING NOW stop detecting obj's entering area. Workaround in _on_player_body_enter (if is hiden - return)
 
+func damage(amount):
+	if shield_up:
+		shield_level-=amount
+	else:
+		disable()
+		emit_signal("sig_explode_player")
 func _on_player_body_enter( body ):
+	if is_hidden():
+		return
 	if body.get_groups().has("asteroids"):
 		if shield_up:
 			body.explode(vel)
-			shield_level-=global.ast_damage[body.size]
-			
-		else:
-			global.game_over=false
+			damage(global.ast_damage[body.size])

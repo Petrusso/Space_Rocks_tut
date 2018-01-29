@@ -24,3 +24,8 @@ func _on_player_bullet_body_enter(body):
 		body.explode(vel.normalized())
 		queue_free()
 		print (body.get_name())
+
+func _on_player_bullet_area_enter( area ):
+	if area.get_groups().has("enemies"):
+		queue_free()
+		area.damage(global.bullet_damage)
